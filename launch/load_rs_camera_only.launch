@@ -1,0 +1,43 @@
+<launch>
+
+    <!-- set environment variable -->
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/model"/>
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/amov_models"/>
+
+    <arg name="ID" default="0"/>
+    <arg name="namespace" default="rs_camera_$(arg ID)"/>
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="init_pose" default="-x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+
+    <!-- PX4 configs: control via terminal-->
+    <arg name="interactive" default="false"/>
+
+    <!-- launch uav -->
+    <group ns="$(arg namespace)">
+        <!-- Gazebo model -->
+        <arg name="est" default="ekf2"/>
+        <arg name="mavlink_tcp_port" value="$(eval 4560 + arg('ID'))"/>
+        <arg name="mavlink_udp_port" value="$(eval 14560 + arg('ID'))"/>
+        <arg name="qgc_udp_port" value="$(eval 14550 + arg('ID'))"/>
+
+        <arg name="sdf" value="$(find simulator)/amov_models/D435i/D435i.sdf"/>
+        <!-- generate sdf vehicle model -->
+        <arg name="cmd" default="xmlstarlet ed
+        $(arg sdf)"/>
+        <param command="$(arg cmd)" name="model_description"/>
+        <!-- spawn vehicle -->
+        <node name="spawn_$(arg namespace)" pkg="gazebo_ros" type="spawn_model"
+            args="-sdf -param model_description
+                  $(arg init_pose)
+                  -model $(arg namespace)"
+            respawn="false" output="screen">
+        </node>
+        
+    </group>
+
+</launch>
