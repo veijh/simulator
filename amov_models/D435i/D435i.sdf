@@ -136,7 +136,7 @@
       </inertial>
       <sensor name="color" type="camera">
         <camera>
-          <horizontal_fov>1.211</horizontal_fov>
+          <horizontal_fov>1.571</horizontal_fov>
           <image>
             <width>640</width>
             <height>480</height>
@@ -355,10 +355,6 @@
       <infrared1CameraInfoTopicName>infra1/camera_info</infrared1CameraInfoTopicName>
       <infrared2TopicName>infra2/image_raw</infrared2TopicName>
       <infrared2CameraInfoTopicName>infra2/camera_info</infrared2CameraInfoTopicName>
-      <colorOpticalframeName>camera_color_frame</colorOpticalframeName>
-      <depthOpticalframeName>camera_depth_frame</depthOpticalframeName>
-      <infrared1OpticalframeName>camera_ired1_frame</infrared1OpticalframeName>
-      <infrared2OpticalframeName>camera_ired2_frame</infrared2OpticalframeName>
       <rangeMinDepth>0.2</rangeMinDepth>
       <rangeMaxDepth>10.0</rangeMaxDepth>
       <pointCloud>1</pointCloud>
