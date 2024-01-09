@@ -23,6 +23,13 @@ void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
   transformStamped.transform.rotation.w = msg->pose.pose.orientation.w;
 
   br.sendTransform(transformStamped);
+
+  static ros::NodeHandle nh("");
+  static ros::Publisher pub = nh.advertise<nav_msgs::Odometry>("odom", 1);
+  nav_msgs::Odometry odom_msg(*msg);
+  odom_msg.header.stamp = ros::Time::now();
+  odom_msg.child_frame_id = namespace_str + "_" + "base_link";
+  pub.publish(odom_msg);
 }
 
 void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
@@ -100,6 +107,9 @@ int main(int argc, char** argv){
 
   ros::NodeHandle nh("");
   namespace_str = nh.getNamespace();
+  if (!namespace_str.empty() && namespace_str[0] == '/') {
+        namespace_str = namespace_str.substr(1);
+  }
   ros::Subscriber base_link = nh.subscribe<nav_msgs::Odometry>("ground_truth/base_link", 1, &base_link_cb);
   ros::Subscriber camera_color_frame = nh.subscribe<nav_msgs::Odometry>("ground_truth/camera_color_frame", 1, &camera_color_frame_cb);
   ros::Subscriber camera_depth_frame = nh.subscribe<nav_msgs::Odometry>("ground_truth/camera_depth_frame", 1, &camera_depth_frame_cb);
