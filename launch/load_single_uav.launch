@@ -65,6 +65,9 @@
             <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
             <arg name="tgt_component" value="1"/>
         </include>
+
+        <!-- tf-tree maintain -->
+        <node name="tf2_$(arg namespace)" pkg="simulator" type="tf2_broadcaster" respawn="false" output="screen"/>
     </group>
 
 </launch>

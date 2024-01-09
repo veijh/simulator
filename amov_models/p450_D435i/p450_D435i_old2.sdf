@@ -536,29 +536,6 @@
     <include>
       <uri>model://D435i</uri>
       <pose>0.12 0 0.02 1.571 0 1.571</pose>
-
-      <plugin name="camera_color_frame_gt" filename="libgazebo_ros_p3d.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>50.0</updateRate>
-        <bodyName>camera_color_frame</bodyName>
-        <topicName>ground_truth/camera_color_frame</topicName>
-        <gaussianNoise>0.00</gaussianNoise>
-        <frameName>map</frameName>
-        <xyzOffsets>0 0 0</xyzOffsets>
-        <rpyOffsets>0 0 0</rpyOffsets>
-      </plugin>
-
-      <plugin name="camera_depth_frame_gt" filename="libgazebo_ros_p3d.so">
-        <alwaysOn>true</alwaysOn>
-        <updateRate>50.0</updateRate>
-        <bodyName>camera_depth_frame</bodyName>
-        <topicName>ground_truth/camera_depth_frame</topicName>
-        <gaussianNoise>0.00</gaussianNoise>
-        <frameName>map</frameName>
-        <xyzOffsets>0 0 0</xyzOffsets>
-        <rpyOffsets>0 0 0</rpyOffsets>
-      </plugin>
-
     </include>
     <joint name="D435i_joint" type="fixed">
       <child>D435i::camera_link</child>
