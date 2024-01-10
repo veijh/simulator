@@ -1,5 +1,6 @@
 #include <ros/ros.h>
 #include <tf2_ros/transform_broadcaster.h>
+#include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <nav_msgs/Odometry.h>
@@ -7,6 +8,14 @@
 std::string namespace_str;
 
 void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
+  static int count = 0;
+  count++;
+  if(count < 2) {
+    return;
+  }
+  else {
+    count = 0;
+  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
   
@@ -33,6 +42,14 @@ void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
+  static int count = 0;
+  count++;
+  if(count < 2) {
+    return;
+  }
+  else {
+    count = 0;
+  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
   
@@ -49,25 +66,17 @@ void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
   transformStamped.transform.rotation.w = msg->pose.pose.orientation.w;
 
   br.sendTransform(transformStamped);
-
-  tf2::Quaternion q_xyz(msg->pose.pose.orientation.x, msg->pose.pose.orientation.y, msg->pose.pose.orientation.z, msg->pose.pose.orientation.w);
-  tf2::Quaternion q_znxny;
-  q_znxny.setRPY(-M_PI/2, 0, -M_PI/2);
-
-  transformStamped.header.frame_id = namespace_str + "_" + "gazebo_color_frame";
-  transformStamped.child_frame_id = namespace_str + "_" + "camera_color_frame";
-  transformStamped.transform.translation.x = 0;
-  transformStamped.transform.translation.y = 0;
-  transformStamped.transform.translation.z = 0;
-  transformStamped.transform.rotation.x = q_znxny.x();
-  transformStamped.transform.rotation.y = q_znxny.y();
-  transformStamped.transform.rotation.z = q_znxny.z();
-  transformStamped.transform.rotation.w = q_znxny.w();
-
-  br.sendTransform(transformStamped);
 }
 
 void camera_depth_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
+  static int count = 0;
+  count++;
+  if(count < 2) {
+    return;
+  }
+  else {
+    count = 0;
+  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
   
@@ -84,22 +93,6 @@ void camera_depth_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
   transformStamped.transform.rotation.w = msg->pose.pose.orientation.w;
 
   br.sendTransform(transformStamped);
-
-  tf2::Quaternion q_xyz(msg->pose.pose.orientation.x, msg->pose.pose.orientation.y, msg->pose.pose.orientation.z, msg->pose.pose.orientation.w);
-  tf2::Quaternion q_znxny;
-  q_znxny.setRPY(-M_PI/2, 0, -M_PI/2);
-
-  transformStamped.header.frame_id = namespace_str + "_" + "gazebo_depth_frame";
-  transformStamped.child_frame_id = namespace_str + "_" + "camera_depth_frame";
-  transformStamped.transform.translation.x = 0;
-  transformStamped.transform.translation.y = 0;
-  transformStamped.transform.translation.z = 0;
-  transformStamped.transform.rotation.x = q_znxny.x();
-  transformStamped.transform.rotation.y = q_znxny.y();
-  transformStamped.transform.rotation.z = q_znxny.z();
-  transformStamped.transform.rotation.w = q_znxny.w();
-
-  br.sendTransform(transformStamped);
 }
 
 int main(int argc, char** argv){
@@ -110,6 +103,31 @@ int main(int argc, char** argv){
   if (!namespace_str.empty() && namespace_str[0] == '/') {
         namespace_str = namespace_str.substr(1);
   }
+
+  static tf2_ros::StaticTransformBroadcaster static_broadcaster;
+  geometry_msgs::TransformStamped transformStamped;
+  transformStamped.transform.translation.x = 0;
+  transformStamped.transform.translation.y = 0;
+  transformStamped.transform.translation.z = 0;
+
+  tf2::Quaternion q_znxny;
+  q_znxny.setRPY(-M_PI/2, 0, -M_PI/2);
+  transformStamped.transform.rotation.x = q_znxny.x();
+  transformStamped.transform.rotation.y = q_znxny.y();
+  transformStamped.transform.rotation.z = q_znxny.z();
+  transformStamped.transform.rotation.w = q_znxny.w();
+
+  transformStamped.header.stamp = ros::Time::now();
+  transformStamped.header.frame_id = namespace_str + "_" + "gazebo_depth_frame";
+  transformStamped.child_frame_id = namespace_str + "_" + "camera_depth_frame";
+  static_broadcaster.sendTransform(transformStamped);
+
+  transformStamped.header.stamp = ros::Time::now();
+  transformStamped.header.frame_id = namespace_str + "_" + "gazebo_color_frame";
+  transformStamped.child_frame_id = namespace_str + "_" + "camera_color_frame";
+  static_broadcaster.sendTransform(transformStamped);
+
+
   ros::Subscriber base_link = nh.subscribe<nav_msgs::Odometry>("ground_truth/base_link", 1, &base_link_cb);
   ros::Subscriber camera_color_frame = nh.subscribe<nav_msgs::Odometry>("ground_truth/camera_color_frame", 1, &camera_color_frame_cb);
   ros::Subscriber camera_depth_frame = nh.subscribe<nav_msgs::Odometry>("ground_truth/camera_depth_frame", 1, &camera_depth_frame_cb);
