@@ -1,0 +1,30 @@
+<launch>
+
+    <!-- set environment variable -->
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/model"/>
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/amov_models"/>
+
+    <!-- you must load the world first -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find simulator)/world/test.world"/>
+        <arg name="paused" value="false"/>
+        <arg name="use_sim_time" value="true"/>
+        <arg name="gui" value="true"/>
+        <arg name="headless" value="false"/>
+        <arg name="debug" value="false"/>
+    </include>
+
+    <!-- spawn the uav -->
+    <include file="$(find simulator)/launch/load_single_uav_mapping.launch">
+        <arg name="ID" value="0"/>
+        <arg name="init_pose" value="-x 0 -y 0 -z 0 -R 0 -P 0 -Y 0"/>
+        <arg name="interactive" value="false"/>
+    </include>
+
+    <include file="$(find simulator)/launch/load_single_uav_mapping.launch">
+        <arg name="ID" value="1"/>
+        <arg name="init_pose" value="-x 0 -y 1 -z 0 -R 0 -P 0 -Y 0"/>
+        <arg name="interactive" value="false"/>
+    </include>
+
+</launch>
