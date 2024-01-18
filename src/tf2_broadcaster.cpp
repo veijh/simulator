@@ -8,17 +8,16 @@
 std::string namespace_str;
 
 void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
-  static int count = 0;
-  count++;
-  if(count < 2) {
-    return;
-  }
-  else {
-    count = 0;
-  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
-  
+  static ros::Time last_pub=ros::Time::now();
+
+  if(ros::Time::now() - last_pub <= ros::Duration(0.05))
+	{
+	  return;
+	}
+  last_pub = ros::Time::now();
+
   transformStamped.header.stamp = ros::Time::now();
   transformStamped.header.frame_id = msg->header.frame_id;
   transformStamped.child_frame_id = namespace_str + "_" + "base_link";
@@ -42,16 +41,15 @@ void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
-  static int count = 0;
-  count++;
-  if(count < 2) {
-    return;
-  }
-  else {
-    count = 0;
-  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
+  static ros::Time last_pub=ros::Time::now();
+
+  if(ros::Time::now() - last_pub <= ros::Duration(0.05))
+	{
+	  return;
+	}
+  last_pub = ros::Time::now();
   
   transformStamped.header.stamp = ros::Time::now();
   transformStamped.header.frame_id = msg->header.frame_id;
@@ -69,17 +67,16 @@ void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void camera_depth_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){
-  static int count = 0;
-  count++;
-  if(count < 2) {
-    return;
-  }
-  else {
-    count = 0;
-  }
   static tf2_ros::TransformBroadcaster br;
   geometry_msgs::TransformStamped transformStamped;
-  
+  static ros::Time last_pub=ros::Time::now();
+
+  if(ros::Time::now() - last_pub <= ros::Duration(0.05))
+	{
+	  return;
+	}
+  last_pub = ros::Time::now();
+
   transformStamped.header.stamp = ros::Time::now();
   transformStamped.header.frame_id = msg->header.frame_id;
   transformStamped.child_frame_id = namespace_str + "_" + "gazebo_depth_frame";
