@@ -1,0 +1,76 @@
+<launch>
+
+    <!-- set environment variable -->
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/model"/>
+    <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/amov_models"/>
+
+    <arg name="ID" default="0"/>
+    <arg name="namespace" default="uav$(arg ID)"/>
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/>
+    <arg name="init_pose" default="-x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
+
+    <!-- PX4 configs: control via terminal-->
+    <arg name="interactive" default="false"/>
+
+    <!-- launch uav -->
+    <group ns="$(arg namespace)">
+        <!-- Gazebo model -->
+        <arg name="est" default="ekf2"/>
+        <arg name="mavlink_tcp_port" value="$(eval 4560 + arg('ID'))"/>
+        <arg name="mavlink_udp_port" value="$(eval 14560 + arg('ID'))"/>
+        <arg name="qgc_udp_port" value="$(eval 14550 + arg('ID'))"/>
+
+        <arg name="sdf" value="$(find simulator)/amov_models/p450_D435i/p450_D435i.sdf"/>
+        <!-- generate sdf vehicle model -->
+        <arg name="cmd" default="xmlstarlet ed
+        -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_tcp_port'
+        -s '//plugin[@name=&quot;mavlink_interface&quot;]'
+        -t elem -n mavlink_tcp_port -v $(arg mavlink_tcp_port)
+        -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_udp_port'
+        -s '//plugin[@name=&quot;mavlink_interface&quot;]'
+        -t elem -n mavlink_udp_port -v $(arg mavlink_udp_port)
+        -d '//plugin[@name=&quot;mavlink_interface&quot;]/qgc_udp_port'
+        -s '//plugin[@name=&quot;mavlink_interface&quot;]'
+        -t elem -n qgc_udp_port -v $(arg qgc_udp_port)
+        $(arg sdf)"/>
+        <param command="$(arg cmd)" name="model_description"/>
+        <!-- spawn vehicle -->
+        <node name="spawn_$(arg namespace)" pkg="gazebo_ros" type="spawn_model"
+            args="-sdf -param model_description
+                  $(arg init_pose)
+                  -model $(arg namespace)"
+            respawn="false" output="screen">
+        </node>
+        
+        <!-- PX4 SITL -->
+        <arg unless="$(arg interactive)" name="px4_command_arg1" value="-d"/>
+        <arg     if="$(arg interactive)" name="px4_command_arg1" value=""/>
+        <node name="sitl" pkg="px4" type="px4" output="screen" 
+        args="$(find px4)/build/px4_sitl_default/etc
+        -s etc/init.d-posix/rcS -i $(arg ID)
+        $(arg px4_command_arg1)">
+        </node>
+
+        <arg name="mavros_udp_port" value="$(eval 14540 + arg('ID'))"/>
+        <arg name="localhost_udp_port" value="$(eval 14580 + arg('ID'))"/>
+        <!-- MAVROS -->
+        <include file="$(find mavros)/launch/px4.launch">
+            <arg name="fcu_url" value="udp://:$(arg mavros_udp_port)@localhost:$(arg localhost_udp_port)"/>
+            <arg name="gcs_url" value=""/>
+            <arg name="tgt_system" value="$(eval 1 + arg('ID'))"/>
+            <arg name="tgt_component" value="1"/>
+        </include>
+
+        <!-- tf-tree maintain -->
+        <node name="tf2_$(arg namespace)" pkg="simulator" type="tf2_broadcaster" respawn="false" output="screen"/>
+
+        <!-- octomap server -->
+        <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
+    </group>
+
+</launch>

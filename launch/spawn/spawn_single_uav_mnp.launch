@@ -25,7 +25,7 @@
         <arg name="mavlink_udp_port" value="$(eval 14560 + arg('ID'))"/>
         <arg name="qgc_udp_port" value="$(eval 14550 + arg('ID'))"/>
 
-        <arg name="sdf" value="$(find simulator)/amov_models/p450_D435i/p450_D435i.sdf"/>
+        <arg name="sdf" value="$(find simulator)/amov_models/iris/iris.sdf"/>
         <!-- generate sdf vehicle model -->
         <arg name="cmd" default="xmlstarlet ed
         -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_tcp_port'
@@ -70,7 +70,11 @@
         <node name="tf2_$(arg namespace)" pkg="simulator" type="tf2_broadcaster" respawn="false" output="screen"/>
 
         <!-- octomap server -->
-        <include file="$(find simulator)/launch/octomap_mapping.launch"/>
+        <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
+
+        <!-- ego_planner -->
+        <include file="$(find simulator)/launch/plan/ego_planner.launch"/>
+
     </group>
 
 </launch>
