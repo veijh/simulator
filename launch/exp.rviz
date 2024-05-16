@@ -3,8 +3,7 @@ Panels:
     Help Height: 78
     Name: Displays
     Property Tree Widget:
-      Expanded:
-        - /Odometry1/Shape1
+      Expanded: ~
       Splitter Ratio: 0.5
     Tree Height: 726
   - Class: rviz/Selection
@@ -122,7 +121,7 @@ Visualization Manager:
       Marker Topic: /uav0/ego_planner_node/optimal_list
       Name: Marker
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Class: rviz/MarkerArray
@@ -130,7 +129,7 @@ Visualization Manager:
       Marker Topic: /uav0/cluster_vis
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -155,7 +154,7 @@ Visualization Manager:
       Marker Topic: /uav0/history_path
       Name: Marker
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -173,57 +172,6 @@ Visualization Manager:
       Shaft Radius: 0.019999999552965164
       Shape: Arrow (Flat)
       Topic: /uav0/frontier_normal
-      Unreliable: false
-      Value: true
-    - Alpha: 1
-      Axes Length: 1
-      Axes Radius: 0.10000000149011612
-      Class: rviz/Pose
-      Color: 255; 25; 0
-      Enabled: true
-      Head Length: 0.30000001192092896
-      Head Radius: 0.10000000149011612
-      Name: Pose
-      Queue Size: 10
-      Shaft Length: 1
-      Shaft Radius: 0.05000000074505806
-      Shape: Arrow
-      Topic: /uav0/mavros/setpoint
-      Unreliable: false
-      Value: true
-    - Angle Tolerance: 0.10000000149011612
-      Class: rviz/Odometry
-      Covariance:
-        Orientation:
-          Alpha: 0.5
-          Color: 255; 255; 127
-          Color Style: Unique
-          Frame: Local
-          Offset: 1
-          Scale: 1
-          Value: true
-        Position:
-          Alpha: 0.30000001192092896
-          Color: 204; 51; 204
-          Scale: 1
-          Value: true
-        Value: true
-      Enabled: true
-      Keep: 100
-      Name: Odometry
-      Position Tolerance: 0.10000000149011612
-      Queue Size: 10
-      Shape:
-        Alpha: 1
-        Axes Length: 0.23000000417232513
-        Axes Radius: 0.10000000149011612
-        Color: 255; 25; 0
-        Head Length: 0.30000001192092896
-        Head Radius: 0.10000000149011612
-        Shaft Length: 0.25
-        Shaft Radius: 0.05000000074505806
-        Value: Axes
-      Topic: /uav0/mavros/local_position/odom
       Unreliable: false
       Value: true
   Enabled: true
@@ -254,7 +202,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 31.5626220703125
+      Distance: 30.797100067138672
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -262,17 +210,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 2.914652109146118
-        Y: 0.4446909427642822
-        Z: 3.3715500831604004
+        X: -0.10264883935451508
+        Y: 0.20420804619789124
+        Z: -1.5040168762207031
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.5647963285446167
+      Pitch: 1.5697963237762451
       Target Frame: <Fixed Frame>
-      Yaw: 3.1404669284820557
+      Yaw: 3.140467405319214
     Saved: ~
 Window Geometry:
   Displays:
@@ -291,4 +239,4 @@ Window Geometry:
     collapsed: true
   Width: 1079
   X: 1558
-  Y: 618
+  Y: 655
