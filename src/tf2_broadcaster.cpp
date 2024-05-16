@@ -3,6 +3,7 @@
 #include <tf2_ros/static_transform_broadcaster.h>
 #include <tf2/LinearMath/Quaternion.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Odometry.h>
 
 std::string namespace_str;
@@ -38,6 +39,14 @@ void base_link_cb(const nav_msgs::Odometry::ConstPtr& msg){
   odom_msg.header.stamp = ros::Time::now();
   odom_msg.child_frame_id = namespace_str + "_" + "base_link";
   pub.publish(odom_msg);
+
+  static ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/vision_pose/pose", 1);
+  geometry_msgs::PoseStamped pose;
+  pose.header.stamp = ros::Time::now();
+  pose.header.frame_id = "map";
+  pose.pose.position = msg->pose.pose.position;
+  pose.pose.orientation = msg->pose.pose.orientation;
+  pose_pub.publish(pose);
 }
 
 void camera_color_frame_cb(const nav_msgs::Odometry::ConstPtr& msg){

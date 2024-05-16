@@ -3,6 +3,7 @@
     <!-- set environment variable -->
     <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/model"/>
     <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/amov_models"/>
+    <env name="PX4_SIM_MODEL" value="gazebo-classic_iris" />
 
     <arg name="ID" default="0"/>
     <arg name="namespace" default="uav$(arg ID)"/>
@@ -73,7 +74,7 @@
         <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
 
         <!-- ego_planner -->
-        <include file="$(find simulator)/launch/plan/ego_planner.launch"/>
+        <!-- <include file="$(find simulator)/launch/plan/ego_planner.launch"/> -->
 
     </group>
 
