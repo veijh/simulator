@@ -6,7 +6,7 @@
 
     <!-- you must load the world first -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-        <arg name="world_name" value="$(find simulator)/world/maze.world"/>
+        <arg name="world_name" value="$(find simulator)/world/NMBE.world"/>
         <arg name="paused" value="false"/>
         <arg name="use_sim_time" value="true"/>
         <arg name="gui" value="true"/>
@@ -17,13 +17,19 @@
     <!-- spawn the uav -->
     <include file="$(find simulator)/launch/spawn/spawn_single_uav_mnp.launch">
         <arg name="ID" value="0"/>
-        <arg name="init_pose" value="-x 0 -y 0 -z 0 -R 0 -P 0 -Y 0"/>
+        <arg name="init_pose" value="-x -10 -y -5 -z 0 -R 0 -P 0 -Y 0"/>
         <arg name="interactive" value="false"/>
     </include>
 
     <include file="$(find simulator)/launch/spawn/spawn_single_uav_mnp.launch">
         <arg name="ID" value="1"/>
-        <arg name="init_pose" value="-x 0 -y 5 -z 0 -R 0 -P 0 -Y 0"/>
+        <arg name="init_pose" value="-x -10 -y -8 -z 0 -R 0 -P 0 -Y 0"/>
+        <arg name="interactive" value="false"/>
+    </include>
+
+    <include file="$(find simulator)/launch/spawn/spawn_single_uav_mnp.launch">
+        <arg name="ID" value="2"/>
+        <arg name="init_pose" value="-x -10 -y -11 -z 0 -R 0 -P 0 -Y 0"/>
         <arg name="interactive" value="false"/>
     </include>
 
