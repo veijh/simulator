@@ -3,6 +3,7 @@
     <!-- set environment variable -->
     <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/model"/>
     <env name="GAZEBO_MODEL_PATH" value="${GAZEBO_MODEL_PATH}:$(find simulator)/amov_models"/>
+    <env name="PX4_SIM_MODEL" value="gazebo-classic_iris" />
 
     <arg name="ID" default="0"/>
     <arg name="namespace" default="uav$(arg ID)"/>
@@ -25,7 +26,7 @@
         <arg name="mavlink_udp_port" value="$(eval 14560 + arg('ID'))"/>
         <arg name="qgc_udp_port" value="$(eval 14550 + arg('ID'))"/>
 
-        <arg name="sdf" value="$(find simulator)/amov_models/p450_D435i/p450_D435i.sdf"/>
+        <arg name="sdf" value="$(find simulator)/amov_models/iris/iris.sdf"/>
         <!-- generate sdf vehicle model -->
         <arg name="cmd" default="xmlstarlet ed
         -d '//plugin[@name=&quot;mavlink_interface&quot;]/mavlink_tcp_port'
@@ -71,6 +72,7 @@
 
         <!-- octomap server -->
         <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
+
     </group>
 
 </launch>

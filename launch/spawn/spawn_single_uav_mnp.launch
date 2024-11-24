@@ -73,9 +73,6 @@
         <!-- octomap server -->
         <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
 
-        <!-- ego_planner -->
-        <!-- <include file="$(find simulator)/launch/plan/ego_planner.launch"/> -->
-
     </group>
 
 </launch>

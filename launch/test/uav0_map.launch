@@ -1,0 +1,6 @@
+<launch>
+    <group ns="uav0">
+        <!-- octomap server -->
+        <include file="$(find simulator)/launch/map/octomap_mapping.launch"/>
+    </group>
+</launch>
