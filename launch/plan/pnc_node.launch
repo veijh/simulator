@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+  <!-- Plan Zone -->
+  <arg name="uav_num" default="0" />
+  <arg name="ID" default="0" />
+  <arg name="resolution" default="0.1" />
+  <arg name="min_x" default="-20.0" />
+  <arg name="max_x" default="20.0" />
+  <arg name="min_y" default="-20.0" />
+  <arg name="max_y" default="20.0" />
+  <arg name="min_z" default="0.0" />
+  <arg name="max_z" default="2.5" />
+  <!-- Constraint -->
+  <arg name="max_vel" default="1.0" />
+  <arg name="max_acc" default="0.25" />
+  <!-- Map Inflation-->
+  <arg name="Inflation_XY" default="0.4" />
+  <arg name="Inflation_Z" default="0.2" />
+  <!-- Take Off Height -->
+  <arg name="takeoff_height" default="1.5" />
+  <!-- Params -->
+  <param name="resolution" value="$(arg resolution)" type="double"/>
+  <param name="min_x" value="$(arg min_x)" type="double"/>
+  <param name="max_x" value="$(arg max_x)" type="double"/>
+  <param name="min_y" value="$(arg min_y)" type="double"/>
+  <param name="max_y" value="$(arg max_y)" type="double"/>
+  <param name="min_z" value="$(arg min_z)" type="double"/>
+  <param name="max_z" value="$(arg max_z)" type="double"/>
+  <param name="max_vel" value="$(arg max_vel)" type="double"/>
+  <param name="max_acc" value="$(arg max_acc)" type="double"/>
+  <param name="Inflation_XY" value="$(arg Inflation_XY)" type="double"/>
+  <param name="Inflation_Z" value="$(arg Inflation_Z)" type="double"/>
+  <param name="Inflation_Z" value="$(arg Inflation_Z)" type="double"/>
+  <param name="takeoff_height" value="$(arg takeoff_height)" type="double"/>
+  <param name="uav_num" value="$(arg uav_num)" type="int"/>
+  <param name="ID" value="$(arg ID)" type="int"/>
+  <node pkg="planner" type="planner_sp_node" name="planner_sp_node" respawn="false" output="screen"/>
+  <node pkg="planner" type="mavros_ctrl_sp_node" name="mavros_ctrl_sp_node" respawn="false" output="screen"/>
+</launch>
